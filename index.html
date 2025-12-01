@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTU Student Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ---------- GLOBAL LAYOUT (matches KTU style) ---------- */
+
+        .top-header {
+            background: #ffffff;
+            border-bottom: 1px solid #d7d7d7;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-section h1 {
+            font-size: 18px;
+            color: #004a7f;
+            font-weight: bold;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #00a1e4;
+            padding: 6px 15px;
+            border-radius: 2px;
+        }
+
+        .user-section span {
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .user-section button {
+            background: #ffffff;
+            color: #00a1e4;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 2px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .user-section button:hover {
+            background: #f2f2f2;
+        }
+
+        .support-text {
+            color: #ff0000;
+            font-size: 11px;
+            text-align: center;
+            padding: 5px 0;
+            background: #fffaf0;
+        }
+
+        .main-container {
+            display: flex;
+        }
+
+        /* ---------- SIDEBAR ---------- */
+        .sidebar {
+            width: 230px;
+            background: #e8f4ff;
+            min-height: calc(100vh - 90px);
+            border-right: 1px solid #c5ddf3;
+        }
+
+        .sidebar-header {
+            background: #0079c1;
+            color: #ffffff;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            border-bottom: 1px solid #c5ddf3;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            color: #22577a;
+            text-decoration: none;
+            font-size: 12px;
+            background: #e8f4ff;
+        }
+
+        .sidebar-menu a span {
+            width: 18px;
+            text-align: center;
+        }
+
+        .sidebar-menu a:hover {
+            background: #d5e9ff;
+        }
+
+        .sidebar-menu a.active {
+            background: #ffffff;
+            border-left: 3px solid #00a1e4;
+        }
+
+        /* ---------- CONTENT AREA ---------- */
+        .content-area {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .page-title {
+            background: #00a1e4;
+            color: #ffffff;
+            padding: 8px 12px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .info-cards {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .info-card {
+            background: #d9d9d9;
+            color: #ffffff;
+            padding: 6px 16px;
+            border-radius: 18px;
+            font-size: 12px;
+        }
+
+        .credit-boxes {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .credit-box {
+            background: #d9d9d9;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 18px;
+            font-size: 12px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .course-table,
+        .payment-container,
+        .success-container,
+        .receipt-container,
+        .upi-setup-container {
+            background: #ffffff;
+            border: 1px solid #d7d7d7;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* ---------- TABLES ---------- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #00a1e4;
+            color: #ffffff;
+            padding: 8px;
+            font-size: 12px;
+            border: 1px solid #0089c1;
+            text-align: left;
+            font-weight: normal;
+        }
+
+        td {
+            padding: 8px;
+            font-size: 12px;
+            border: 1px solid #e0e0e0;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .checkbox-cell {
+            text-align: center;
+        }
+
+        .checkbox-cell input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .course-table {
+            margin-bottom: 15px;
+        }
+
+        .total-section {
+            background: #ffffff;
+            padding: 15px;
+            border: 1px solid #d7d7d7;
+            text-align: right;
+        }
+
+        .total-amount {
+            font-size: 18px;
+            color: #333333;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .footer-note {
+            background: #d9edf7;
+            text-align: center;
+            padding: 10px;
+            color: #31708f;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+
+        /* ---------- BUTTONS ---------- */
+        .btn {
+            padding: 8px 18px;
+            background: #00a1e4;
+            color: #ffffff;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #0089c1;
+        }
+
+        .proceed-btn {
+            width: auto;
+        }
+
+        .back-btn {
+            background: #6c757d;
+        }
+
+        .back-btn:hover {
+            background: #555e66;
+        }
+
+        .paid-btn {
+            background: #28a745;
+        }
+
+        .paid-btn:hover {
+            background: #218838;
+        }
+
+        .view-receipt-btn {
+            background: #f0ad4e;
+            color: #ffffff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 2px;
+            font-size: 12px;
+            cursor: pointer;
+            float: right;
+        }
+
+        .view-receipt-btn:hover {
+            background: #ec971f;
+        }
+
+        .print-btn {
+            background: #00a1e4;
+            color: #ffffff;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .print-btn:hover {
+            background: #0089c1;
+        }
+
+        /* ---------- LOGIN PAGE ---------- */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+        }
+
+        .login-box {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            width: 380px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-header h1 {
+            font-size: 20px;
+            color: #004a7f;
+            margin-bottom: 6px;
+        }
+
+        .login-header p {
+            font-size: 12px;
+            color: #555555;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333333;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 2px;
+            border: 1px solid #cccccc;
+            font-size: 13px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00a1e4;
+        }
+
+        /* ---------- UPI SETUP ---------- */
+        .upi-setup-container {
+            max-width: 450px;
+            margin: 40px auto;
+            padding: 25px 30px;
+        }
+
+        .upi-setup-container h2 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #333333;
+        }
+
+        /* ---------- PAYMENT PAGE ---------- */
+        .payment-container {
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 25px;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #00a1e4;
+        }
+
+        .payment-header h2 {
+            font-size: 18px;
+            color: #333333;
+            margin-bottom: 5px;
+        }
+
+        .payment-header p {
+            font-size: 13px;
+            color: #555555;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #dddddd;
+            border-radius: 3px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .payment-method:hover {
+            border-color: #00a1e4;
+            background: #f0f8ff;
+        }
+
+        .payment-method.active {
+            border-color: #00a1e4;
+            background: #e1f2ff;
+        }
+
+        .payment-details {
+            display: none;
+        }
+
+        .payment-details.active {
+            display: block;
+        }
+
+        .qr-container {
+            text-align: center;
+            padding: 15px;
+        }
+
+        .upi-id-display {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 3px;
+            border: 1px solid #dddddd;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00a1e4;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ---------- SUCCESS PAGE ---------- */
+        .success-container {
+            max-width: 780px;
+            margin: 20px auto;
+            padding: 25px;
+        }
+
+        .success-header {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            text-align: center;
+            border-radius: 3px;
+            margin-bottom: 20px;
+        }
+
+        .success-header h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .semester-info {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+
+        .semester-badge {
+            background: #999999;
+            color: #ffffff;
+            padding: 5px 12px;
+            border-radius: 16px;
+        }
+
+        .status-badge {
+            background: #5cb85c;
+            color: #ffffff;
+            padding: 5px 12px;
+            border-radius: 16px;
+        }
+
+        /* ---------- RECEIPT PAGE ---------- */
+        .receipt-container {
+            max-width: 780px;
+            margin: 20px auto;
+            padding: 30px;
+        }
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #333333;
+        }
+
+        .receipt-header h1 {
+            font-size: 22px;
+            color: #333333;
+            margin-bottom: 3px;
+        }
+
+        .receipt-header p {
+            font-size: 13px;
+            color: #555555;
+        }
+
+        .receipt-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .receipt-field label {
+            display: block;
+            font-size: 11px;
+            color: #555555;
+            margin-bottom: 3px;
+        }
+
+        .receipt-field strong {
+            font-size: 13px;
+            color: #333333;
+        }
+
+        .receipt-total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 2px solid #dddddd;
+        }
+
+        .no-print {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @media print {
+            .no-print,
+            .top-header {
+                display: none;
+            }
+            body {
+                background: #ffffff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- -------------------- LOGIN PAGE -------------------- -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h1>KTU Student Portal</h1>
+                <p>APJ Abdul Kalam Technological University</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn" style="width:100%;">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- -------------------- UPI SETUP PAGE -------------------- -->
+    <div id="upiSetupPage" class="hidden">
+        <div class="top-header">
+            <div class="logo-section">
+                <h1>APJ Abdul Kalam Technological University</h1>
+            </div>
+            <div class="user-section">
+                <span>Welcome <span id="studentNameUPI"></span></span>
+            </div>
+        </div>
+
+        <div class="upi-setup-container">
+            <h2>Configure UPI Payment</h2>
+            <p style="color:#555;font-size:13px;margin-bottom:15px;">
+                Enter the UPI ID / GPay number where the exam fee should be received.
+            </p>
+            <form id="upiSetupForm">
+                <div class="form-group">
+                    <label>UPI ID</label>
+                    <input type="text" id="upiIdInput" placeholder="yourname@okicici or mobilenumber@upi" required>
+                </div>
+                <button type="submit" class="btn">Continue to Course Registration</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- -------------------- COURSE / PAYMENT PAGE -------------------- -->
+    <div id="coursePage" class="hidden">
+        <div class="top-header">
+            <div class="logo-section">
+                <h1>APJ Abdul Kalam Technological University</h1>
+            </div>
+            <div class="user-section">
+                <span>Welcome <span id="studentName"></span></span>
+                <button onclick="alert('Change password')">Change Password</button>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="support-text">
+            Your contact number for support from University is : 9188922751
+        </div>
+
+        <div class="main-container">
+            <div class="sidebar">
+                <div class="sidebar-header">Student Management</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#"><span>👤</span> My Profile</a></li>
+                    <li><a href="#"><span>📝</span> Student Data Correction Request</a></li>
+                    <li><a href="#"><span>⊗</span> Cancellation Requests</a></li>
+                    <li><a href="#" class="active"><span>📋</span> Course/Semester Exam Registration</a></li>
+                    <li><a href="#"><span>✓</span> Bank Account Details</a></li>
+                    <li><a href="#"><span>👤</span> Minor Degree</a></li>
+                    <li><a href="#"><span>👍</span> Admission Cancellation/Course Completion</a></li>
+                    <li><a href="#"><span>🎖</span> Honours Degree</a></li>
+                    <li><a href="#"><span>📄</span> My Certificates</a></li>
+                    <li><a href="#"><span>📋</span> Special FE Registration</a></li>
+                    <li><a href="#"><span>💰</span> My Fees</a></li>
+                    <li><a href="#"><span>⭐</span> PWD Eligibility / Grace Mark Request</a></li>
+                    <li><a href="#"><span>✉</span> Malpractice Decisions</a></li>
+                    <li><a href="#"><span>📘</span> Non-KTU Course Registration Request</a></li>
+                    <li><a href="#"><span>⏳</span> Program Duration Extension</a></li>
+                    <li><a href="#"><span>💳</span> My Payment Transactions</a></li>
+                    <li><a href="#"><span>🎓</span> Convocation</a></li>
+                    <li><a href="#"><span>📨</span> Student Condonation Request</a></li>
+                    <li><a href="#"><span>📊</span> Reports</a></li>
+                </ul>
+            </div>
+
+            <div class="content-area">
+                <div class="page-title">Student Course Registration</div>
+
+                <div class="info-cards">
+                    <div class="info-card">Academic year: 2025 - 2026</div>
+                    <div class="info-card">Semester: S1</div>
+                </div>
+
+                <div class="credit-boxes">
+                    <div class="credit-box">Maximum Credits Allowed for a Semester: 20.0</div>
+                    <div class="credit-box">Credits of Courses Taken/Selected Below: <span id="totalCredits">0.0</span></div>
+                    <div class="credit-box">Remaining Credits that can be Taken/Selected: <span id="remainingCredits">20.0</span></div>
+                </div>
+
+                <div class="course-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Student</th>
+                                <th>Slot</th>
+                                <th>Course</th>
+                                <th>Semester</th>
+                                <th>Credits</th>
+                                <th>Fees</th>
+                                <th>Appearing Chance</th>
+                                <th>Eligible For Fee Concession</th>
+                                <th>Student Registration Submitted Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="courseTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="total-section">
+                    <div class="total-amount">
+                        Total Amount: ₹<span id="totalAmount">0</span>
+                    </div>
+                    <button class="btn proceed-btn" onclick="proceedToPayment()">Proceed to Payment</button>
+                </div>
+
+                <div class="footer-note">
+                    Fee Receipt for B.Tech S1(R,S) Exam Dec 2025 (2024 Scheme)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- -------------------- PAYMENT PAGE -------------------- -->
+    <div id="paymentPage" class="hidden">
+        <div class="top-header">
+            <div class="logo-section">
+                <h1>APJ Abdul Kalam Technological University</h1>
+            </div>
+            <div class="user-section">
+                <span>Welcome <span id="studentNamePayment"></span></span>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="payment-container">
+                <div class="payment-header">
+                    <h2>Payment Gateway</h2>
+                    <p>Total Amount: ₹<span id="paymentTotal">0</span></p>
+                </div>
+
+                <div class="payment-methods">
+                    <div id="methodNetbanking" class="payment-method" onclick="selectPaymentMethod('netbanking')">
+                        <div style="font-size:36px;">🏦</div>
+                        <h3>Net Banking</h3>
+                    </div>
+                    <div id="methodUPI" class="payment-method" onclick="selectPaymentMethod('upi')">
+                        <div style="font-size:36px;">📱</div>
+                        <h3>UPI Payment</h3>
+                    </div>
+                </div>
+
+                <!-- Netbanking -->
+                <div id="netbankingDetails" class="payment-details">
+                    <form class="banking-form">
+                        <div class="form-group">
+                            <label>Select Bank</label>
+                            <select>
+                                <option>State Bank of India</option>
+                                <option>HDFC Bank</option>
+                                <option>ICICI Bank</option>
+                                <option>Axis Bank</option>
+                                <option>Canara Bank</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn back-btn" onclick="backToCourses()">Back</button>
+                        <button type="button" class="btn" onclick="showSuccess()">Pay Now</button>
+                    </form>
+                </div>
+
+                <!-- UPI -->
+                <div id="upiDetails" class="payment-details">
+                    <div id="loadingQR" class="loading hidden">
+                        <div class="spinner"></div>
+                        <p style="font-size:13px;color:#555;">Generating QR Code...</p>
+                    </div>
+
+                    <div id="qrDisplay" class="qr-container hidden">
+                        <h3 style="font-size:15px;margin-bottom:5px;">Scan QR Code to Pay</h3>
+                        <div id="qrcode"></div>
+                        <div class="upi-id-display">
+                            <strong>UPI ID: </strong><span id="upiIdDisplay"></span>
+                        </div>
+                        <p style="color:#555;font-size:12px;margin-top:6px;">
+                            Scan using any UPI app (GPay, PhonePe, Paytm, etc.)
+                        </p>
+                        <button class="btn back-btn" onclick="backToCourses()">Back</button>
+                        <button class="btn paid-btn" onclick="showSuccess()">I Have Paid</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- -------------------- SUCCESS PAGE -------------------- -->
+    <div id="successPage" class="hidden">
+        <div class="top-header">
+            <div class="logo-section">
+                <h1>APJ Abdul Kalam Technological University</h1>
+            </div>
+            <div class="user-section">
+                <span>Welcome <span id="studentNameSuccess"></span></span>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <div class="sidebar">
+                <div class="sidebar-header">Student Management</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#"><span>👤</span> My Profile</a></li>
+                    <li><a href="#"><span>📝</span> Student Data Correction Request</a></li>
+                    <li><a href="#"><span>⊗</span> Cancellation Requests</a></li>
+                    <li><a href="#" class="active"><span>📋</span> Course/Semester Exam Registration</a></li>
+                    <li><a href="#"><span>✓</span> Bank Account Details</a></li>
+                    <li><a href="#"><span>👤</span> Minor Degree</a></li>
+                </ul>
+            </div>
+
+            <div class="content-area">
+                <div class="page-title">My Semesters</div>
+
+                <div class="success-container">
+                    <div class="success-header">
+                        <h2>✓ Payment Successful!</h2>
+                        <p>Your course registration has been completed successfully.</p>
+                    </div>
+
+                    <div class="semester-info">
+                        <div class="semester-badge">Academic Year: 2025-2026</div>
+                        <div class="semester-badge">Semester: S1</div>
+                        <div class="status-badge">Submitted</div>
+                    </div>
+
+                    <button class="view-receipt-btn" onclick="showReceipt()">👁 View Registered Courses</button>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- -------------------- RECEIPT PAGE -------------------- -->
+    <div id="receiptPage" class="hidden">
+        <div class="top-header">
+            <div class="logo-section">
+                <h1>APJ Abdul Kalam Technological University</h1>
+            </div>
+            <div class="user-section">
+                <span>Welcome <span id="studentNameReceipt"></span></span>
+            </div>
+        </div>
+
+        <div class="receipt-container">
+            <div class="receipt-header">
+                <h1>Course Registration Receipt</h1>
+                <p>APJ Abdul Kalam Technological University</p>
+            </div>
+
+            <div class="receipt-info">
+                <div class="receipt-field">
+                    <label>Student Name:</label>
+                    <strong id="receiptStudentName"></strong>
+                </div>
+                <div class="receipt-field">
+                    <label>Registration Number:</label>
+                    <strong id="receiptRegNo">EKC25CS053</strong>
+                </div>
+                <div class="receipt-field">
+                    <label>Academic Year:</label>
+                    <strong>2025 - 2026</strong>
+                </div>
+                <div class="receipt-field">
+                    <label>Semester:</label>
+                    <strong>S1</strong>
+                </div>
+                <div class="receipt-field">
+                    <label>Transaction Date:</label>
+                    <strong id="transactionDate"></strong>
+                </div>
+                <div class="receipt-field">
+                    <label>Payment Method:</label>
+                    <strong id="receiptPaymentMethod">UPI</strong>
+                </div>
+            </div>
+
+            <div class="receipt-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Slot</th>
+                            <th>Course</th>
+                            <th>Credits</th>
+                            <th>Fees</th>
+                        </tr>
+                    </thead>
+                    <tbody id="receiptTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="receipt-total">
+                Total Amount Paid: ₹<span id="receiptTotal">0</span>
+            </div>
+
+            <div class="no-print">
+                <button class="print-btn" onclick="window.print()">🖨 Print Receipt</button>
+                <button class="btn back-btn" onclick="backToSuccess()">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QRCode library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        /* ---------- DATA ---------- */
+        const courses = [
+            { slot: 'A', name: 'GAMAT101-MATHEMATICS FOR INFORMATION SCIENCE-1', credits: 3.0, fees: 584, student: 'EKC25CS053 - SAHAL SABITH P' },
+            { slot: 'B', name: 'GXCYT122-CHEMISTRY FOR INFORMATION SCIENCE / ELECTRICAL SCIENCE', credits: 4.0, fees: 584, student: 'EKC25CS053 - SAHAL SABITH P' },
+            { slot: 'C', name: 'GMEST103-ENGINEERING GRAPHICS AND COMPUTER AIDED DRAWING', credits: 3.0, fees: 584, student: 'EKC25CS053 - SAHAL SABITH P' },
+            { slot: 'D', name: 'GXEST104-INTRODUCTION TO ELECTRICAL & ELECTRONICS ENGINEERING', credits: 4.0, fees: 584, student: 'EKC25CS053 - SAHAL SABITH P' },
+            { slot: 'F', name: 'UCEST105-ALGORITHMIC THINKING WITH PYTHON', credits: 4.0, fees: 584, student: 'EKC25CS053 - SAHAL SABITH P' },
+            { slot: 'L', name: 'GXESL106-BASIC ELECTRICAL AND ELECTRONICS ENGINEERING WORKSHOP', credits: 1.0, fees: 584, student: 'EKC25CS053 - SAHAL SABITH P' },
+            { slot: 'I', name: 'UCHUT128-LIFE SKILLS AND PROFESSIONAL COMMUNICATION', credits: 1.0, fees: 584, student: 'EKC25CS053 - SAHAL SABITH P' }
+        ];
+
+        const MAX_CREDITS = 20.0;
+
+        let loggedInUser = '';
+        let upiId = '';
+        let selectedCourses = [];  // filled based on checkboxes
+        let currentTotalAmount = 0;
+        let currentPaymentMethod = 'UPI'; // default for receipt
+
+        /* ---------- HELPERS ---------- */
+        function showPage(id) {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('upiSetupPage').classList.add('hidden');
+            document.getElementById('coursePage').classList.add('hidden');
+            document.getElementById('paymentPage').classList.add('hidden');
+            document.getElementById('successPage').classList.add('hidden');
+            document.getElementById('receiptPage').classList.add('hidden');
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function logout() {
+            loggedInUser = '';
+            upiId = '';
+            selectedCourses = [];
+            currentTotalAmount = 0;
+            document.getElementById('loginForm').reset();
+            document.getElementById('upiSetupForm').reset();
+            showPage('loginPage');
+        }
+
+        /* ---------- LOGIN FLOW ---------- */
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            console.log('Login form submitted');
+            e.preventDefault();
+            const uname = document.getElementById('username').value.trim();
+            const pwd = document.getElementById('password').value.trim();
+            console.log('Username:', uname, 'Password length:', pwd.length);
+            if (!uname || !pwd) {
+                alert('Please enter both username and password');
+                return;
+            }
+            loggedInUser = uname;
+            document.getElementById('studentNameUPI').textContent = loggedInUser;
+            console.log('Calling showPage with upiSetupPage');
+            showPage('upiSetupPage');
+        });
+
+        /* ---------- UPI SETUP FLOW ---------- */
+        document.getElementById('upiSetupForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            upiId = document.getElementById('upiIdInput').value.trim();
+            if (!upiId) return;
+
+            // Set names everywhere
+            document.getElementById('studentName').textContent = loggedInUser;
+            document.getElementById('studentNamePayment').textContent = loggedInUser;
+            document.getElementById('studentNameSuccess').textContent = loggedInUser;
+            document.getElementById('studentNameReceipt').textContent = loggedInUser;
+            document.getElementById('receiptStudentName').textContent = loggedInUser;
+
+            buildCourseTable();
+            recalcTotals();
+
+            showPage('coursePage');
+        });
+
+        /* ---------- COURSE TABLE + TOTALS ---------- */
+        function buildCourseTable() {
+            const tbody = document.getElementById('courseTableBody');
+            tbody.innerHTML = '';
+            selectedCourses = [];
+
+            courses.forEach((course, index) => {
+                const tr = document.createElement('tr');
+
+                // checkbox
+                const tdCheck = document.createElement('td');
+                tdCheck.className = 'checkbox-cell';
+                const cb = document.createElement('input');
+                cb.type = 'checkbox';
+                cb.checked = true; // all selected by default
+                cb.addEventListener('change', () => toggleCourseSelection(index, cb.checked));
+                tdCheck.appendChild(cb);
+                tr.appendChild(tdCheck);
+
+                // student
+                let td = document.createElement('td');
+                td.textContent = course.student;
+                tr.appendChild(td);
+
+                // slot
+                td = document.createElement('td');
+                td.textContent = course.slot;
+                tr.appendChild(td);
+
+                // course name
+                td = document.createElement('td');
+                td.textContent = course.name;
+                tr.appendChild(td);
+
+                // semester
+                td = document.createElement('td');
+                td.textContent = 'S1';
+                tr.appendChild(td);
+
+                // credits
+                td = document.createElement('td');
+                td.textContent = course.credits.toFixed(1);
+                tr.appendChild(td);
+
+                // fees
+                td = document.createElement('td');
+                td.textContent = 'INR ' + course.fees.toFixed(2);
+                tr.appendChild(td);
+
+                // appearing chance
+                td = document.createElement('td');
+                td.textContent = '1';
+                tr.appendChild(td);
+
+                // fee concession
+                td = document.createElement('td');
+                td.textContent = 'No';
+                tr.appendChild(td);
+
+                // registration date
+                td = document.createElement('td');
+                td.textContent = '01/12/2025';
+                tr.appendChild(td);
+
+                tbody.appendChild(tr);
+
+                selectedCourses.push({ ...course }); // start with all selected
+            });
+        }
+
+        function toggleCourseSelection(index, isSelected) {
+            const course = courses[index];
+            const existingIndex = selectedCourses.findIndex(c => c.slot === course.slot && c.name === course.name);
+
+            if (isSelected && existingIndex === -1) {
+                selectedCourses.push({ ...course });
+            } else if (!isSelected && existingIndex !== -1) {
+                selectedCourses.splice(existingIndex, 1);
+            }
+            recalcTotals();
+        }
+
+        function recalcTotals() {
+            let totalCredits = 0;
+            let totalAmount = 0;
+
+            selectedCourses.forEach(c => {
+                totalCredits += c.credits;
+                totalAmount += c.fees;
+            });
+
+            currentTotalAmount = totalAmount;
+
+            document.getElementById('totalCredits').textContent = totalCredits.toFixed(1);
+            const remaining = Math.max(0, MAX_CREDITS - totalCredits);
+            document.getElementById('remainingCredits').textContent = remaining.toFixed(1);
+            document.getElementById('totalAmount').textContent = totalAmount.toFixed(2);
+        }
+
+        /* ---------- PROCEED TO PAYMENT ---------- */
+        function proceedToPayment() {
+            if (selectedCourses.length === 0) {
+                alert('Please select at least one subject before proceeding to payment.');
+                return;
+            }
+
+            document.getElementById('paymentTotal').textContent = currentTotalAmount.toFixed(2);
+
+            // reset payment method UI
+            document.getElementById('methodNetbanking').classList.remove('active');
+            document.getElementById('methodUPI').classList.remove('active');
+            document.getElementById('netbankingDetails').classList.remove('active');
+            document.getElementById('upiDetails').classList.remove('active');
+
+            // default select UPI method
+            selectPaymentMethod('upi');
+
+            showPage('paymentPage');
+        }
+
+        function backToCourses() {
+            showPage('coursePage');
+        }
+
+        /* ---------- PAYMENT METHODS ---------- */
+        let qrCodeInstance = null;
+
+        function selectPaymentMethod(method) {
+            currentPaymentMethod = (method === 'netbanking') ? 'Net Banking' : 'UPI';
+
+            const methodNet = document.getElementById('methodNetbanking');
+            const methodUpi = document.getElementById('methodUPI');
+            const netDetails = document.getElementById('netbankingDetails');
+            const upiDetails = document.getElementById('upiDetails');
+
+            methodNet.classList.remove('active');
+            methodUpi.classList.remove('active');
+            netDetails.classList.remove('active');
+            upiDetails.classList.remove('active');
+
+            if (method === 'netbanking') {
+                methodNet.classList.add('active');
+                netDetails.classList.add('active');
+            } else {
+                methodUpi.classList.add('active');
+                upiDetails.classList.add('active');
+                generateUPIQRWithDelay();
+            }
+        }
+
+        function generateUPIQRWithDelay() {
+            const loadingDiv = document.getElementById('loadingQR');
+            const qrDisplay = document.getElementById('qrDisplay');
+            const qrContainer = document.getElementById('qrcode');
+            const upiSpan = document.getElementById('upiIdDisplay');
+
+            loadingDiv.classList.remove('hidden');
+            qrDisplay.classList.add('hidden');
+
+            // clear old QR if any
+            qrContainer.innerHTML = '';
+            qrCodeInstance = null;
+
+            setTimeout(() => {
+                loadingDiv.classList.add('hidden');
+                qrDisplay.classList.remove('hidden');
+
+                const amount = currentTotalAmount.toFixed(2);
+                const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(loggedInUser)}&am=${amount}&cu=INR`;
+
+                upiSpan.textContent = upiId;
+
+                qrCodeInstance = new QRCode(qrContainer, {
+                    text: upiUri,
+                    width: 220,
+                    height: 220
+                });
+            }, 3000); // 3 seconds loading
+        }
+
+        /* ---------- SUCCESS + RECEIPT ---------- */
+        function showSuccess() {
+            // set transaction date
+            const now = new Date();
+            const d = String(now.getDate()).padStart(2, '0');
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const y = now.getFullYear();
+            document.getElementById('transactionDate').textContent = `${d}/${m}/${y}`;
+
+            showPage('successPage');
+        }
+
+        function showReceipt() {
+            // fill receipt payment method + total
+            document.getElementById('receiptPaymentMethod').textContent = currentPaymentMethod;
+            document.getElementById('receiptTotal').textContent = currentTotalAmount.toFixed(2);
+
+            const tbody = document.getElementById('receiptTableBody');
+            tbody.innerHTML = '';
+
+            selectedCourses.forEach(c => {
+                const tr = document.createElement('tr');
+
+                let td = document.createElement('td');
+                td.textContent = c.slot;
+                tr.appendChild(td);
+
+                td = document.createElement('td');
+                td.textContent = c.name;
+                tr.appendChild(td);
+
+                td = document.createElement('td');
+                td.textContent = c.credits.toFixed(1);
+                tr.appendChild(td);
+
+                td = document.createElement('td');
+                td.textContent = 'INR ' + c.fees.toFixed(2);
+                tr.appendChild(td);
+
+                tbody.appendChild(tr);
+            });
+
+            showPage('receiptPage');
+        }
+
+        function backToSuccess() {
+            showPage('successPage');
+        }
+    </script>
+</body>
+</html>
